@@ -25,10 +25,10 @@ AI was used for rapid prototyping, ensuring best practices, and maintaining code
 ## Key Prompts Used
 <!-- List 3-5 important prompts you used with your AI assistant -->
 
-1. [Example: "understand the entire mock-api folder"]
-2. [Example: "in README.md file can see one task to crate rest ful apis for production ready and standardized, so understand the task to develop api from this. note- only consider for backend part"]
-3. [Example: "okay! so now we are good to go, lets understand readme of backend folder and lets start implementing the code in backend folder itself"]
-4. [Example: "i want to add priority and due date as well for every task, priority should be high, medium or low. if priority is high then it's duw date must be with in next 7 days and in get api sorting should be based on due date"]
+1. Understand the entire mock-api folder"
+2. In README.md file can see one task to crate rest ful apis for production ready and standardized, so understand the task to develop api from this. note- only consider for backend part
+3. Okay! so now we are good to go, lets understand readme of backend folder and lets start implementing the code in backend folder itself
+4. I want to add priority and due date as well for every task, priority should be high, medium or low. if priority is high then it's duw date must be with in next 7 days and in get api sorting should be based on due date
 
 ## Design Decisions (optional)
 <!-- Explain key architectural or implementation decisions you made and why -->
