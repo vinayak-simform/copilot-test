@@ -73,30 +73,30 @@ AI was used for rapid prototyping, ensuring best practices, and maintaining code
 ## Time Breakdown
 <!-- Optional: Approximate time spent on each phase -->
 
-- Planning & Setup: [X minutes]
-- Core Implementation: [X minutes]
-- Testing & Debugging: [X minutes]
-- [✅] Option 3: Advanced Validation (Implemented business rules and complex validation)
-- [✅] Option 4: Task Filtering & Search (Implemented status-based filtering)
-- [ ] Option 5: Form Validation & UX
-- [ ] Option 6: Drag-and-Drop Task Reordering
-- [ ] Option 7: Local Storage / Offline Support
-- [ ] Option 8: Real-time Updates
-- [ ] Option 9: Task Statistics Dashboard
+- Planning & Setup: [7 minutes]
+- Core Implementation: [15 minutes]
+- Testing & Debugging: [10 minutes]
+- Advanced Validation (Implemented business rules and complex validation) [10 minutes]
+- Option 4: Task Filtering & Search (Implemented status-based filtering) [7 minutes]
+- Option 5: Form Validation & UX
+- Option 6: Drag-and-Drop Task Reordering
+- Option 7: Local Storage / Offline Support
+- Option 8: Real-time Updates
+- Option 9: Task Statistics Dashboard
 
 **Additional Features Implemented:**
-- File-based persistence (tasks.json)
-- Priority levels (high, medium, low) with business rules
-- Due date tracking with automatic sorting
-- High-priority tasks must have due date within 7 days
-- Completed tasks cannot be updated without status change
-- Comprehensive API documentation
-- Automated test script
-- Postman collection with multiple test cases
+- [✅] File-based persistence (tasks.json)
+- [✅] Priority levels (high, medium, low) with business rules
+- [✅] Due date tracking with automatic sorting
+- [✅] High-priority tasks must have due date within 7 days
+- [✅] Completed tasks cannot be updated without status change
+- [✅] Comprehensive API documentation
+- [✅] Automated test script
+- [✅] Postman collection with multiple test cases
 - [ ] Not Attempted
 - [ ] Option 1: Request Logging Middleware
 - [ ] Option 2: API Pagination
-- [ ] Option 3: Advanced Validation
+- [✅]  Option 3: Advanced Validation
 **Implementation Highlights:**
 
 1. **Production-Ready Code Structure:**
