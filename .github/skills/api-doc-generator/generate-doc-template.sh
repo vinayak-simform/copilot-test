@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "## API Endpoint Documentation"
+echo ""
+echo "**Endpoint:** /api/example"
+echo "**Method:** GET"
+echo ""
+echo "### Description"
+echo "Describe the purpose of the API."
+echo ""
+echo "### Request Parameters"
+echo "- id (string) : Unique identifier"
+echo ""
+echo "### Response"
+echo "{ \"status\": \"success\", \"data\": {} }"
