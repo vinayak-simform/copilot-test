@@ -1,0 +1,323 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  description: REST API for managing tasks, supporting creation, retrieval, and deletion of tasks.
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+tags:
+  - name: Tasks
+    description: Task management operations
+
+paths:
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Get all tasks
+      description: Retrieve a list of all tasks. Optionally filter by status.
+      operationId: getAllTasks
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Filter tasks by their current status.
+          schema:
+            type: string
+            enum:
+              - todo
+              - in-progress
+              - done
+          example: todo
+      responses:
+        "200":
+          description: A list of tasks.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+              example:
+                - id: 123e4567-e89b-12d3-a456-426614174000
+                  title: Complete project documentation
+                  description: Write comprehensive API documentation for the task service
+                  status: in-progress
+                  priority: high
+                  dueDate: "2026-04-07T00:00:00.000Z"
+                  createdAt: "2026-04-01T10:00:00.000Z"
+                  updatedAt: "2026-04-01T10:05:00.000Z"
+        "400":
+          description: Invalid status filter value.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error:
+                  message: "Invalid status filter. Must be one of: todo, in-progress, done"
+                  statusCode: 400
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    post:
+      tags:
+        - Tasks
+      summary: Create a new task
+      description: Create a new task with the provided details.
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTaskRequest"
+            example:
+              title: Complete project documentation
+              description: Write comprehensive API documentation for the task service
+              status: in-progress
+              priority: high
+              dueDate: "2026-04-07T00:00:00.000Z"
+      responses:
+        "201":
+          description: Task created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+              example:
+                id: 123e4567-e89b-12d3-a456-426614174000
+                title: Complete project documentation
+                description: Write comprehensive API documentation for the task service
+                status: in-progress
+                priority: high
+                dueDate: "2026-04-07T00:00:00.000Z"
+                createdAt: "2026-04-01T10:00:00.000Z"
+                updatedAt: "2026-04-01T10:00:00.000Z"
+        "400":
+          description: Validation error — required fields missing or invalid values.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                missing_title:
+                  summary: Missing title
+                  value:
+                    error:
+                      message: Title is required and must be a non-empty string
+                      statusCode: 400
+                title_too_long:
+                  summary: Title exceeds maximum length
+                  value:
+                    error:
+                      message: Title must not exceed 100 characters
+                      statusCode: 400
+                missing_description:
+                  summary: Missing description
+                  value:
+                    error:
+                      message: Description is required and must be a non-empty string
+                      statusCode: 400
+                invalid_status:
+                  summary: Invalid status value
+                  value:
+                    error:
+                      message: "Status must be one of: todo, in-progress, done"
+                      statusCode: 400
+                high_priority_due_date:
+                  summary: High priority task due date too far out
+                  value:
+                    error:
+                      message: High priority tasks must have a due date within the next 7 days
+                      statusCode: 400
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tasks/{id}:
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task
+      description: Permanently delete a task identified by its UUID.
+      operationId: deleteTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The UUID of the task to delete.
+          schema:
+            type: string
+            format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+      responses:
+        "204":
+          description: Task deleted successfully. No content returned.
+        "400":
+          description: Invalid task ID supplied.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error:
+                  message: Invalid task ID
+                  statusCode: 400
+        "404":
+          description: Task not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error:
+                  message: Task with ID 123e4567-e89b-12d3-a456-426614174000 not found
+                  statusCode: 404
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Task:
+      type: object
+      description: A task object representing a unit of work.
+      required:
+        - id
+        - title
+        - description
+        - status
+        - priority
+        - dueDate
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the task (UUID v4).
+          example: 123e4567-e89b-12d3-a456-426614174000
+        title:
+          type: string
+          maxLength: 100
+          description: Short title of the task.
+          example: Complete project documentation
+        description:
+          type: string
+          maxLength: 500
+          description: Detailed description of the task.
+          example: Write comprehensive API documentation for the task service
+        status:
+          type: string
+          enum:
+            - todo
+            - in-progress
+            - done
+          description: Current status of the task.
+          example: in-progress
+        priority:
+          type: string
+          enum:
+            - high
+            - medium
+            - low
+          description: Priority level of the task.
+          example: high
+        dueDate:
+          type: string
+          format: date-time
+          description: Due date for the task (ISO 8601 format).
+          example: "2026-04-07T00:00:00.000Z"
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the task was created (ISO 8601 format).
+          example: "2026-04-01T10:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the task was last updated (ISO 8601 format).
+          example: "2026-04-01T10:05:00.000Z"
+
+    CreateTaskRequest:
+      type: object
+      description: Request body for creating a new task.
+      required:
+        - title
+        - description
+        - priority
+        - dueDate
+      properties:
+        title:
+          type: string
+          maxLength: 100
+          description: Short title of the task. Required, non-empty, max 100 characters.
+          example: Complete project documentation
+        description:
+          type: string
+          maxLength: 500
+          description: Detailed description of the task. Required, non-empty, max 500 characters.
+          example: Write comprehensive API documentation for the task service
+        status:
+          type: string
+          enum:
+            - todo
+            - in-progress
+            - done
+          description: Initial status of the task. Defaults to `todo` if not provided.
+          default: todo
+          example: in-progress
+        priority:
+          type: string
+          enum:
+            - high
+            - medium
+            - low
+          description: >
+            Priority level of the task. Required. High priority tasks must have a
+            due date within the next 7 days.
+          example: high
+        dueDate:
+          type: string
+          format: date-time
+          description: >
+            Due date for the task in ISO 8601 format. Required. For high priority
+            tasks, must be within the next 7 days.
+          example: "2026-04-07T00:00:00.000Z"
+
+    ErrorResponse:
+      type: object
+      description: Standard error response format.
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - message
+            - statusCode
+          properties:
+            message:
+              type: string
+              description: Human-readable description of the error.
+              example: Task with ID 123e4567-e89b-12d3-a456-426614174000 not found
+            statusCode:
+              type: integer
+              description: HTTP status code of the error.
+              example: 404
