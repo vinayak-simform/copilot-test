@@ -18,7 +18,17 @@ export const validateCreateTask = (
     return;
   }
 
-  if (title.length > 100) {
+  if (title.trim().length < 3) {
+    res.status(400).json({
+      error: {
+        message: 'Title must be at least 3 characters long',
+        statusCode: 400,
+      },
+    });
+    return;
+  }
+
+  if (title.trim().length > 100) {
     res.status(400).json({
       error: {
         message: 'Title must not exceed 100 characters',
@@ -93,7 +103,17 @@ export const validateUpdateTask = (
       return;
     }
 
-    if (title.length > 100) {
+    if (title.trim().length < 3) {
+      res.status(400).json({
+        error: {
+          message: 'Title must be at least 3 characters long',
+          statusCode: 400,
+        },
+      });
+      return;
+    }
+
+    if (title.trim().length > 100) {
       res.status(400).json({
         error: {
           message: 'Title must not exceed 100 characters',
