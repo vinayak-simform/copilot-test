@@ -1,0 +1,14 @@
+{
+  "hooks": [
+    {
+      "name": "log-tool-usage",
+      "type": "preToolUse",
+      "command": "echo \"Tool execution: $TOOL_NAME at $(date)\" >> agent-tool-logs.txt"
+    },
+    {
+      "name": "session-start-log",
+      "type": "sessionStart",
+      "command": "echo \"Copilot agent session started at $(date)\" >> agent-session-logs.txt"
+    }
+  ]
+}
