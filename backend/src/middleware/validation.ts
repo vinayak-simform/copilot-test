@@ -18,10 +18,30 @@ export const validateCreateTask = (
     return;
   }
 
-  if (title.length > 100) {
+  if (title.trim().length < 3) {
+    res.status(400).json({
+      error: {
+        message: 'Title must be at least 3 characters long',
+        statusCode: 400,
+      },
+    });
+    return;
+  }
+
+  if (title.trim().length > 100) {
     res.status(400).json({
       error: {
         message: 'Title must not exceed 100 characters',
+        statusCode: 400,
+      },
+    });
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9 ]+$/.test(title.trim())) {
+    res.status(400).json({
+      error: {
+        message: 'Title must contain only letters and numbers',
         statusCode: 400,
       },
     });
@@ -93,10 +113,30 @@ export const validateUpdateTask = (
       return;
     }
 
-    if (title.length > 100) {
+    if (title.trim().length < 3) {
+      res.status(400).json({
+        error: {
+          message: 'Title must be at least 3 characters long',
+          statusCode: 400,
+        },
+      });
+      return;
+    }
+
+    if (title.trim().length > 100) {
       res.status(400).json({
         error: {
           message: 'Title must not exceed 100 characters',
+          statusCode: 400,
+        },
+      });
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9 ]+$/.test(title.trim())) {
+      res.status(400).json({
+        error: {
+          message: 'Title must contain only letters and numbers',
           statusCode: 400,
         },
       });
