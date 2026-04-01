@@ -38,6 +38,16 @@ export const validateCreateTask = (
     return;
   }
 
+  if (!/^[a-zA-Z0-9 ]+$/.test(title.trim())) {
+    res.status(400).json({
+      error: {
+        message: 'Title must contain only letters and numbers',
+        statusCode: 400,
+      },
+    });
+    return;
+  }
+
   // Validate description
   if (!description || typeof description !== 'string' || description.trim().length === 0) {
     res.status(400).json({
@@ -117,6 +127,16 @@ export const validateUpdateTask = (
       res.status(400).json({
         error: {
           message: 'Title must not exceed 100 characters',
+          statusCode: 400,
+        },
+      });
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9 ]+$/.test(title.trim())) {
+      res.status(400).json({
+        error: {
+          message: 'Title must contain only letters and numbers',
           statusCode: 400,
         },
       });
