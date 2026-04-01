@@ -18,6 +18,16 @@ export const validateCreateTask = (
     return;
   }
 
+  if (title.trim().length < 4) {
+    res.status(400).json({
+      error: {
+        message: 'Title must be at least 4 characters',
+        statusCode: 400,
+      },
+    });
+    return;
+  }
+
   if (title.length > 100) {
     res.status(400).json({
       error: {
@@ -87,6 +97,16 @@ export const validateUpdateTask = (
       res.status(400).json({
         error: {
           message: 'Title must be a non-empty string',
+          statusCode: 400,
+        },
+      });
+      return;
+    }
+
+    if (title.trim().length < 4) {
+      res.status(400).json({
+        error: {
+          message: 'Title must be at least 4 characters',
           statusCode: 400,
         },
       });
