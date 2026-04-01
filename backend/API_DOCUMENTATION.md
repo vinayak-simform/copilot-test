@@ -1,5 +1,7 @@
 # Task Management API Documentation
 
+> **OpenAPI Specification:** A machine-readable OpenAPI 3.0 spec covering the core Task API endpoints is available at [`docs/openapi.yaml`](docs/openapi.yaml).
+
 ## Base URL
 ```
 http://localhost:3000/api
@@ -23,6 +25,8 @@ Retrieve all tasks with optional filtering by status.
     "title": "Sample Task",
     "description": "This is a sample task",
     "status": "todo",
+    "priority": "medium",
+    "dueDate": "2026-04-07T00:00:00.000Z",
     "createdAt": "2026-02-20T10:00:00.000Z",
     "updatedAt": "2026-02-20T10:00:00.000Z"
   }
@@ -52,6 +56,8 @@ Retrieve a single task by its ID.
   "title": "Sample Task",
   "description": "This is a sample task",
   "status": "todo",
+  "priority": "medium",
+  "dueDate": "2026-04-07T00:00:00.000Z",
   "createdAt": "2026-02-20T10:00:00.000Z",
   "updatedAt": "2026-02-20T10:00:00.000Z"
 }
@@ -84,14 +90,18 @@ Create a new task.
 {
   "title": "New Task",
   "description": "Task description",
-  "status": "todo"  // optional, defaults to "todo"
+  "status": "todo",
+  "priority": "high",
+  "dueDate": "2026-04-07T00:00:00.000Z"
 }
 ```
 
 **Validation Rules:**
 - `title`: Required, non-empty string, max 100 characters
 - `description`: Required, non-empty string, max 500 characters
-- `status`: Optional, must be one of: `todo`, `in-progress`, `done`
+- `status`: Optional, must be one of: `todo`, `in-progress`, `done` (defaults to `todo`)
+- `priority`: Required, must be one of: `high`, `medium`, `low`
+- `dueDate`: Required, must be a valid ISO 8601 date; high priority tasks must have a due date within the next 7 days
 
 **Response:** `201 Created`
 ```json
@@ -100,6 +110,8 @@ Create a new task.
   "title": "New Task",
   "description": "Task description",
   "status": "todo",
+  "priority": "high",
+  "dueDate": "2026-04-07T00:00:00.000Z",
   "createdAt": "2026-02-20T10:05:00.000Z",
   "updatedAt": "2026-02-20T10:05:00.000Z"
 }
@@ -122,7 +134,9 @@ curl -X POST http://localhost:3000/api/tasks \
   -d '{
     "title": "Complete project documentation",
     "description": "Write comprehensive API documentation",
-    "status": "in-progress"
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2026-04-07T00:00:00.000Z"
   }'
 ```
 
@@ -141,7 +155,9 @@ Update an existing task. You can update one or more fields.
 {
   "title": "Updated Title",        // optional
   "description": "Updated desc",   // optional
-  "status": "in-progress"          // optional
+  "status": "in-progress",         // optional
+  "priority": "medium",            // optional
+  "dueDate": "2026-04-10T00:00:00.000Z"  // optional
 }
 ```
 
@@ -150,6 +166,8 @@ Update an existing task. You can update one or more fields.
 - `title`: Non-empty string, max 100 characters (if provided)
 - `description`: Non-empty string, max 500 characters (if provided)
 - `status`: Must be one of: `todo`, `in-progress`, `done` (if provided)
+- `priority`: Must be one of: `high`, `medium`, `low` (if provided)
+- `dueDate`: Must be a valid ISO 8601 date (if provided); if `priority` is `high`, must be within the next 7 days
 
 **Response:** `200 OK`
 ```json
@@ -158,6 +176,8 @@ Update an existing task. You can update one or more fields.
   "title": "Updated Title",
   "description": "Updated desc",
   "status": "in-progress",
+  "priority": "medium",
+  "dueDate": "2026-04-10T00:00:00.000Z",
   "createdAt": "2026-02-20T10:00:00.000Z",
   "updatedAt": "2026-02-20T10:10:00.000Z"
 }
@@ -243,6 +263,8 @@ All errors follow a consistent format:
   title: string;           // Max 100 characters
   description: string;     // Max 500 characters
   status: 'todo' | 'in-progress' | 'done';
+  priority: 'high' | 'medium' | 'low';
+  dueDate: string;         // ISO 8601 datetime
   createdAt: string;       // ISO 8601 datetime
   updatedAt: string;       // ISO 8601 datetime
 }
